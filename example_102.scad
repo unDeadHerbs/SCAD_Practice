@@ -36,7 +36,7 @@ module example_102(){
 	  union(){
 	       handel();
 	       axle();
-	       translate([0,0,plate_spacing]){
+	       up(plate_spacing){
 		    plate();}}
 	  hole();}}
 

@@ -38,7 +38,7 @@ module example_101(){
 			       /*overcut*/2*axial_radius,
 			       key_length]);}}
 	       // pin_hole
-	       translate([0,0,pin_height]){
+	       up(pin_height){
 		    rotate([90,0,0]){
 			 cylinder(r=pin_radius,h=/*overcut*/2*axial_radius,center=true);}}}}
      handel();
