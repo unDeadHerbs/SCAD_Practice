@@ -18,10 +18,9 @@ module example_104(){
 	  cube([body_thickness,side_length,side_length],center=true);}
      module plate(){
 	  thickness=30*mm;
-	  translate([0,-side_length/2,-thickness/2]){
-	       cube([side_length/2,side_length,thickness]);}
-	  translate([side_length/2,0,0]){
-	       cylinder(d=side_length,h=thickness,center=true);}}
+	  translate([side_length/2,0,-thickness/2]){
+	       rotate([0,0,180]){
+		    arch(side_length/2,side_length,thickness);}}}
      module washer(){
 	  pin_hole=25*mm;
 	  difference(){
