@@ -108,3 +108,21 @@ module arch(radius,height,thickness){
 	  cube([height-radius,2*radius,thickness]);}}
 
 
+/*
+ * An annulus.
+ *
+ * @param ro The outer radius.
+ *
+ * @param ri The inner radius.
+ *
+ * @param h The height of the annulus.
+ */
+module annulus(ro,ri,h){
+     if(ri<0){
+	  difference(){
+	       cylinder(r=ro,h);
+	       cylinder(r=ro+ri,h);}}
+     else{
+	  difference(){
+	       cylinder(r=ro,h);
+	       cylinder(r=ri,h);}}}
