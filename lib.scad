@@ -1,28 +1,77 @@
 /*
+ * Sum all of the elements in a vector.
+ */
+function sum(x, i = 0)=
+     len(x) > i
+     ?x[i]
+      +sum(x, i + 1)
+     :0;
+/*
+ * Count the number of non-undef elements of a list.
+ */
+function count_defined(list) =
+     sum([
+      for (e=list)
+	   if(e!=undef)
+	      1]);
+/*
+ * Return the first non-undef element, if there is one.
+ */
+function any(list) =
+     [for(e=list)
+	 if(e!=undef)
+	    e
+     ][0];
+/*
+ * Assert that exactly one element is non-undef and return it.
+ */
+function unique(list,message) =
+     message
+     ?assert(count_defined(list)==1,message)
+      any(list)
+     :any(list);
+
+/*
  * Make a pair of an object.
  *
- * @param split The distance to seperate the pair.
+ * @param split The distance to separate the pair.
+ *        radius
+ *        diameter
+ *        r
+ *        d
  *
  * @param rot An optional amount to rotate the pair.
+ *        theta
  *
  * @param edge Center on the left of the pair rather than the middle.
  *
  * @pair mirrored Make the left a mirror of the right instead of a
  *                rotation.
  */
-module pair(split,rot=0,edge=false/*, mirrord=false*/){
+module pair(split,rot,edge=false,mirrored=false,
+     radius,r,diameter,d,theta){
+     rad=unique([split/2,radius,r,diameter,d/2],
+		"Distance required.");
+     angle=any([rot,theta,0]);
      module center(){
 	  if(edge){
-	       translate([split/2,0,0]){
+	       translate([rad,0,0]){
 		    children();}}
 	  else{
 	       children();}}
-     rotate([0,0,rot]){
+     module flip(){
+	  if(mirrored){
+	       mirror([0,1,0]){
+		    children();}}
+	  else{
+	       rotate([0,0,180]){
+		    children();}}}
+     rotate([0,0,angle]){
 	  center(){
-	       translate([split/2,0,0]){
+	       translate([rad,0,0]){
 		    children();}
-	       translate([-split/2,0,0]){
-		    rotate([0,0,180]){
+	       translate([-rad,0,0]){
+		    flip(){
 			 children();}}}}}
 
 module xpair(split,rot=0,edge=false){
@@ -51,46 +100,17 @@ module tripple(split,rot=0){
  *
  * @param count The number of elements in the circle
  *
- * @param r The raius of the circle.
+ * @param r The radius of the circle.
  */
-module set(count,r){
-     for(i=[0:count]){
-	  rotate([0,0,360/count*i]){
-	       translate([r,0,0]){
-		    children();}}}}
-
-module set_better(count,radius,r,diameter,d){
-     module set_impl(count,r){
-	  for(i=[0:count]){
-	       rotate([0,0,360/count*i]){
-		    translate([r,0,0]){
-			 children();}}}}
-     if(!count){
-	  //error
-     }
-     if(radius){
-	  if(r || diameter || d){
-	       // error
-	  }else{
-	       set_impl(count,radius){
-		    children();}}}
-     if(r){
-	  if(radius || diameter || d){
-	       // error
-	  }else{
-	       set_impl(count,r){
-		    children();}}}
-     if(diameter){
-	  if(radius || r || d){
-	       // error
-	  }else{
-	       set_impl(count,diameter/2){
-		    children();}}}
-     if(d){
-	  if(radius || r || diameter){
-	       // error
-	  }else{
-	       set_impl(count,d/2){
+module set(count,radius,
+	   c,r,diameter,d){
+     cnt=unique([count,c],
+		"Count required.");
+     rad=unique([radius,r,diameter/2,d/2],
+		"Radius required.");
+     for(i=[0:cnt]){
+	  rotate([0,0,360/cnt*i]){
+	       translate([rad,0,0]){
 		    children();}}}}
 
 /*
@@ -111,27 +131,57 @@ function forward(distance)=
 function back(distance)=
      forward(-distance);
 
-module arch(radius,height,thickness){
-     cylinder(r=radius,h=thickness);
-     translate([0,-radius,0]){
-	  cube([height-radius,2*radius,thickness]);}}
+/*
+ * A rectangle with a circular end.
+ */
+module arch(radius,height,thickness,
+	    r,h,t,
+	    window_radius,w){
+     rad=unique([radius,r],
+		"Radius required.");
+     hei=unique([height,h],
+		"Height required.");
+     th=unique([thickness,t],
+	       "Thickness required.");
+     wi=any([window_radius,w]);
+     if(wi){
+	  difference(){
+	       arch(r=rad,h=hei,t=th);
+	       cylinder(r=wi,h=th);}}
+     else{
+	  cylinder(r=rad,h=th);
+	  translate([0,-rad,0]){
+	       cube([hei-rad,2*rad,th]);}}}
 
 
 /*
  * An annulus.
  *
- * @param ro The outer radius.
+ * @param outer_radius The outer radius.
+ *        radius_outer
+ *        ro
  *
- * @param ri The inner radius.
+ * @param inner_radius The inner radius.
+ *        radius_inner
+ *        ri 
  *
- * @param h The height of the annulus.
+ * @param height The height of the annulus.
+ *        h
  */
-module annulus(ro,ri,h){
-     if(ri<0){
+module annulus(outer_radius,inner_radius,height,
+	       radius_outer,radius_inner,
+	       ro,ri,h,center=false){
+     rad_out=unique([outer_radius,radius_outer,ro],
+		    "Outer radius required.");
+     rad_in=unique([inner_radius,radius_inner,ri],
+		   "Inner radius required.");
+     hei=unique([height,h],
+		"Height required.");
+     if(rad_in<0){
 	  difference(){
-	       cylinder(r=ro,h);
-	       cylinder(r=ro+ri,h);}}
+	       cylinder(r=rad_out,h=hei,center=center);
+	       cylinder(r=rad_out+rad_in,h=hei,center=center);}}
      else{
 	  difference(){
-	       cylinder(r=ro,h);
-	       cylinder(r=ri,h);}}}
+	       cylinder(r=rad_out,h=hei,center=center);
+	       cylinder(r=rad_in,h=hei,center=center);}}}
