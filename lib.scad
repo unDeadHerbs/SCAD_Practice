@@ -104,7 +104,7 @@ module ypair(split,rot=0,edge=false){
 /*
  * Make a pair but with a middle element.
  *
- * @param split The distance to seperate the pair.
+ * @param split The distance to separate the pair.
  *
  * @param rot An optional amount to rotate the pair.
  */
@@ -151,7 +151,7 @@ function back(distance)=
 
 /*
  * A copy of =cylinder= that is slightly taller so that =difference=
- * dosen't cause graphical glitches.
+ * doesn't cause graphical glitches.
  */
 module wcylinder(h,r,r1,r2,d,d1,d2,center){
      fix_delta=1;
@@ -170,9 +170,10 @@ module wcylinder(h,r,r1,r2,d,d1,d2,center){
  * Make a parallelepiped out of three three-vectors.
  */
 module parallelepiped(v1,v2,v3)
-     polyhedron([0*v1,v1,v1+v2,v2,v3,v3+v1,v3+v1+v2,v3+v2],
-	  [[0,1,2,3],[4,5,6,7],[0,1,5,4],
-	   [3,2,6,7],[0,3,7,4],[1,5,6,2]]);
+     hull() // Not sure why this is needed.
+	  polyhedron([0*v1,v1,v1+v2,v2,v3,v3+v1,v3+v1+v2,v3+v2],
+		     [[0,1,2,3],[4,5,6,7],[0,1,5,4],
+		      [3,2,6,7],[0,3,7,4],[1,5,6,2]]);
 
 /*
  * An annulus.
@@ -185,20 +186,31 @@ module parallelepiped(v1,v2,v3)
  *        radius_inner
  *        ri 
  *
- * @param height The height of the annulus.
+ * @param thickness The height of the annulus.
+ *        height
+ *        t
  *        h
  *
- * @param theta The angle of exclusion.
+ * @param center TODO
  *
- * @param cut_tangent If the cut should be tanget to the center cut
- *                    instead of raidal.
+ * @param theta An optional angle of exclusion.
+ *              TODO: Have an inclusion mode.
  *
- * @param cut_sym If the cut should be symetric about the X axis.
+ * @param cut_tangent If the cut should be tangent to the center cut
+ *                    instead of radial.  NOTE: If this is specified
+ *                    but theta is not then the internal radius is
+ *                    used.
+ *
+ * @param cut_symmetric If the cut should be symmetric about the X axis.
  */
+
+// TODO: have an optional 2D child to shape the annulus's profile,
+// this is in conflict with the radial parameters, as they define the
+// shape.
 module annulus(outer_radius,inner_radius,height,
 	       radius_outer,radius_inner,
 	       ro,ri,h,thickness,t,center=false,
-	       theta,cut_tangent=false,cut_sym=false){
+	       theta,cut_tangent=false,cut_symmetric=false){
      rad_out=unique([outer_radius,radius_outer,ro],
 		    "Outer radius required.");
      rad_in=unique([inner_radius,radius_inner,ri],
@@ -206,33 +218,46 @@ module annulus(outer_radius,inner_radius,height,
      hei=unique([height,h,thickness,t],
 		"Height required.");
 
-
-     module cutter(){
-	  // TODO center
-	  if(cut_sym){
-	       parallelepiped([0,0,hei],
-			      rad_out*[cos(-theta/2),sin(-theta/2),0],
-			      rad_out*[cos(theta/2),sin(theta/2),0]);}
+     module cutter(t,sym=true){
+	  if(t>180){
+	       assert(cut_tangent==false,
+		      "Tangent cuts currently can't be over 180 degrees.");}
+	  if(sym && cut_symmetric){
+	       cutter(t/2,false);
+	       mirror([0,1,0]){
+		    cutter(t/2,false);}}
+	  else if(t>90){
+	       cutter(90,false);
+	       rotate(90){
+		    cutter(t-90,false);}}
 	  else{
-	       parallelepiped([0,0,hei],
-			      rad_out*[1,0,0],
-			      rad_out*[cos(theta),sin(theta),0]);}}
+	       if(center){
+		    translate(down(hei/2)){
+			 parallelepiped(hei*[0,0,1],
+					rad_out*[1,0,0],
+					rad_out*[cos(t),sin(t),0]);}}
+	       else{
+		    parallelepiped(hei*[0,0,1],
+				   rad_out*[1,0,0],
+				   rad_out*[cos(t),sin(t),0]);}}}
      // If cut_tangent but no theta, then use the internal radius.
      if((cut_tangent) && (theta==undef)){
 	  annulus(ro=rad_out,ri=rad_in,h=hei,center=center,
 		  theta=2*asin(rad_in/rad_out),
 		  cut_tangent=true,
-		  cut_sym=cut_sym);}
-     else if(theta){
+		  cut_symmetric=cut_symmetric);}
+     else if(theta!=undef){
 	  difference(){
 	       annulus(ro=rad_out,ri=rad_in,h=hei,center=center);
 	       if(cut_tangent){
 		    hull(){
 			 wcylinder(r=rad_in,h=hei,center=center);
-			 cutter();}
+			 intersection(){
+			      cutter(theta);
+			      cylinder(r=rad_out,h=hei,center=center);}}
 	       }
 	       else{
-		    cutter();}}}
+		    cutter(theta);}}}
      else if(rad_in<0){
 	  difference(){
 	       cylinder(r=rad_out,h=hei,center=center);
