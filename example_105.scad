@@ -57,7 +57,7 @@ module example_105(){
 			  height-bottom_thickness-top_thickness]);}
 	  module peg_hole(){
 	       radius=15;
-	       up(height/2){
+	       translate(up(height/2)){
 		    rotate([0,90,0]){
 			 cylinder(r=radius,h=/*overcut*/length,center=true);}}}
 	  difference(){

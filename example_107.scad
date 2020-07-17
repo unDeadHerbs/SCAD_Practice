@@ -25,6 +25,7 @@ module example_107(){
 		    set(4,r=sqrt(2)*side_lenght/2){
 			 cylinder(r=hole_radius,h=thickness);}}
 	       cylinder(r=small_hole_radius,h=thickness);}}}
+
      module double_axle(){
 	  small_axle_radius=15*mm;
 	  large_axle_radius=30*mm;
@@ -33,9 +34,12 @@ module example_107(){
 	  difference(){
 	       union(){
 		    cylinder(r=small_axle_radius,h=small_axle_length);
-		    up(small_axle_length){cylinder(r=large_axle_radius,h=large_axle_length);}}
+		    translate(up(small_axle_length)){
+			 cylinder(r=large_axle_radius,h=large_axle_length);}}
 	       cylinder(r=small_hole_radius,h=small_axle_length+wall_thickness);
-	       up(small_axle_length+wall_thickness){cylinder(r=large_hole_radius,h=large_axle_length-wall_thickness);}}}}
+	       translate(up(small_axle_length+wall_thickness)){
+		    cylinder(r=large_hole_radius,h=large_axle_length-wall_thickness);}}}}
+
      module back_plate(){
 	  thickness=20*mm;
 	  inter_holes_radius=45*mm;

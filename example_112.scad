@@ -24,7 +24,7 @@ module example_112(){
 	  annulus(ro=shaft_radius,
 		  ri=-wall_thickness,
 		  h=shaft_length);
-	  up(shaft_length-socket_overlap){
+	  translate(up(shaft_length-socket_overlap)){
 	       annulus(ro=shaft_radius+wall_thickness,
 		       ri=-wall_thickness,
 		       h=socket_length);}}

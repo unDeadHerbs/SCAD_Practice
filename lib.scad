@@ -98,9 +98,18 @@ module set_better(count,radius,r,diameter,d){
  *
  * @param distance The distance to lift by.
  */
-module up(distance){
-     translate([0,0,distance]){
-	  children();}}
+function up(distance)=
+     [0,0,unique([distance],"Distance required.")];
+function down(distance)=
+     up(-distance);
+function right(distance)=
+     [0,unique([distance],"Distance required."),0];
+function left(distance)=
+     right(-distance);
+function forward(distance)=
+     [unique([distance],"Distance required."),0,0];
+function back(distance)=
+     forward(-distance);
 
 module arch(radius,height,thickness){
      cylinder(r=radius,h=thickness);

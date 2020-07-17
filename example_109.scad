@@ -17,12 +17,12 @@ module example_109(){
 	  radius_outer=35*mm;
 	  radius_inner=20*mm;
 	  depth=30*mm;
-	  up(plate_thickness){
+	  translate(up(plate_thickness)){
 	       difference(){
 		    hull(){
 			 pair(inter_centers){
 			      cylinder(r=radius_outer,h=socket_thickness);}}
-		    up(socket_thickness-depth){
+		    translate(up(socket_thickness-depth)){
 			 hull(){
 			      pair(inter_centers){
 				   cylinder(r=radius_inner,h=depth);}}}}}}

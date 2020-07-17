@@ -33,7 +33,7 @@ module example_106(){
 	  back_thickness=30*mm;
 	  top_thickness=50*mm;
 	  difference(){
-	       up(pin_elevation){
+	       translate(up(pin_elevation)){
 		    rotate([0,90,0]){
 			 difference(){
 			      arch(major_radius,pin_elevation+major_radius,body_width);
