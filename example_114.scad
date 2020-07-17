@@ -6,20 +6,23 @@ use <lib.scad>
 
 module example_114(){
      body_size=100*mm;
-     module claw(c=true){
+     module claw(has_claw=true){
 	  peg_percent=.5;
-	  translate(forward(50)+down(25)){
-	       rotate(180){
-		    difference(){
-			 arch(r=body_size/2,
-			      w=body_size/2*peg_percent,
-			      h=body_size,
-			      t=body_size/2);
-			 if(c){
-			      hull(){
-				   pair(d=-/*overcut*/body_size,edge=true){
-					wcylinder(r=body_size/2*peg_percent,
-						  h=body_size);}}}}}}}
+	  translate(down(body_size/2/2)){
+	  outer_glue(){
+	       translate(forward(body_size/2)){
+		    if(has_claw){
+			 annulus(ro=body_size/2,
+				 ri=body_size/2*peg_percent,
+				 t=body_size/2,
+				 cut_tangent=true,
+				 cut_sym=true);}
+		    else{
+			 annulus(ro=body_size/2,
+				 ri=body_size/2*peg_percent,
+				 t=body_size/2);}}
+	       translate(body_size*[0,-1/2,0]){
+		    cube(body_size*[1/2,1,1/2]);}}}}
      module body(){
 	  cube(body_size*[1,1,.5],
 	       center=true);}

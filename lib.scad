@@ -33,16 +33,21 @@ function unique(list,message) =
 
 
 /*
- * A copy of =cylinder= that is slightly taller so that =difference=
- * dosen't cause graphical glitches.
+ * Glue each child onto the outside of the priors.
+ *
+ * TODO: The outside is currently defined by =hull= and this isn't
+ * best.
+ *
+ * TODO: Make a better name.
  */
-module wcylinder(h,r,r1,r2,d,d1,d2,center){
-     fix_delta=1;
-     if(center){
-	  cylinder(h=h+fix_delta,r=r,r1=r1,r2=r2,d=d,d1=d1,d2=d2,center=center);}
-     else{
-	  translate(down(fix_delta)){
-	       cylinder(h=h+2*fix_delta,r=r,r1=r1,r2=r2,d=d,d1=d1,d2=d2,center=center);}}}
+module outer_glue()
+     for(c=[0:$children-1])
+	  difference(){
+	       children(c);
+	       if(c!=0)
+		    for(co=[0:c-1])
+			 hull()
+			      children(co);}
 
 /*
  * Make a pair of an object.
@@ -145,27 +150,29 @@ function back(distance)=
      forward(-distance);
 
 /*
- * A rectangle with a circular end.
+ * A copy of =cylinder= that is slightly taller so that =difference=
+ * dosen't cause graphical glitches.
  */
-module arch(radius,height,thickness,
-	    r,h,t,
-	    window_radius,w){
-     rad=unique([radius,r],
-		"Radius required.");
-     hei=unique([height,h],
-		"Height required.");
-     th=unique([thickness,t],
-	       "Thickness required.");
-     wi=any([window_radius,w]);
-     if(wi){
-	  difference(){
-	       arch(r=rad,h=hei,t=th);
-	       wcylinder(r=wi,h=th);}}
+module wcylinder(h,r,r1,r2,d,d1,d2,center){
+     fix_delta=1;
+     if(center){
+	  cylinder(h=h+fix_delta,
+		   r=r,r1=r1,r2=r2,
+		   d=d,d1=d1,d2=d2,
+		   center=true);}
      else{
-	  cylinder(r=rad,h=th);
-	  translate([0,-rad,0]){
-	       cube([hei-rad,2*rad,th]);}}}
+	  translate(down(fix_delta)){
+	       cylinder(h=h+2*fix_delta,
+			r=r,r1=r1,r2=r2,
+			d=d,d1=d1,d2=d2);}}}
 
+/*
+ * Make a parallelepiped out of three three-vectors.
+ */
+module parallelepiped(v1,v2,v3)
+     polyhedron([0*v1,v1,v1+v2,v2,v3,v3+v1,v3+v1+v2,v3+v2],
+	  [[0,1,2,3],[4,5,6,7],[0,1,5,4],
+	   [3,2,6,7],[0,3,7,4],[1,5,6,2]]);
 
 /*
  * An annulus.
@@ -180,17 +187,53 @@ module arch(radius,height,thickness,
  *
  * @param height The height of the annulus.
  *        h
+ *
+ * @param theta The angle of exclusion.
+ *
+ * @param cut_tangent If the cut should be tanget to the center cut
+ *                    instead of raidal.
+ *
+ * @param cut_sym If the cut should be symetric about the X axis.
  */
 module annulus(outer_radius,inner_radius,height,
 	       radius_outer,radius_inner,
-	       ro,ri,h,center=false){
+	       ro,ri,h,thickness,t,center=false,
+	       theta,cut_tangent=false,cut_sym=false){
      rad_out=unique([outer_radius,radius_outer,ro],
 		    "Outer radius required.");
      rad_in=unique([inner_radius,radius_inner,ri],
 		   "Inner radius required.");
-     hei=unique([height,h],
+     hei=unique([height,h,thickness,t],
 		"Height required.");
-     if(rad_in<0){
+
+
+     module cutter(){
+	  // TODO center
+	  if(cut_sym){
+	       parallelepiped([0,0,hei],
+			      rad_out*[cos(-theta/2),sin(-theta/2),0],
+			      rad_out*[cos(theta/2),sin(theta/2),0]);}
+	  else{
+	       parallelepiped([0,0,hei],
+			      rad_out*[1,0,0],
+			      rad_out*[cos(theta),sin(theta),0]);}}
+     // If cut_tangent but no theta, then use the internal radius.
+     if((cut_tangent) && (theta==undef)){
+	  annulus(ro=rad_out,ri=rad_in,h=hei,center=center,
+		  theta=2*asin(rad_in/rad_out),
+		  cut_tangent=true,
+		  cut_sym=cut_sym);}
+     else if(theta){
+	  difference(){
+	       annulus(ro=rad_out,ri=rad_in,h=hei,center=center);
+	       if(cut_tangent){
+		    hull(){
+			 wcylinder(r=rad_in,h=hei,center=center);
+			 cutter();}
+	       }
+	       else{
+		    cutter();}}}
+     else if(rad_in<0){
 	  difference(){
 	       cylinder(r=rad_out,h=hei,center=center);
 	       wcylinder(r=rad_out+rad_in,h=hei,center=center);}}
@@ -198,3 +241,30 @@ module annulus(outer_radius,inner_radius,height,
 	  difference(){
 	       cylinder(r=rad_out,h=hei,center=center);
 	       wcylinder(r=rad_in,h=hei,center=center);}}}
+
+/*
+ * A rectangle with a circular end.
+ *
+ * TODO: remake as outer_glue and annulus.
+ */
+module arch(radius,height,thickness,
+	    r,h,t,
+	    window_radius,w){
+     rad=unique([radius,r],
+		"Radius required.");
+     hei=unique([height,h],
+		"Height required.");
+     th=unique([thickness,t],
+	       "Thickness required.");
+     wi=any([window_radius,w]);
+     if(wi){
+	  if(wi<0){
+	       arch(r=rad,h=hei,t=th,w=r-wi);}
+	  else{
+	       difference(){
+		    arch(r=rad,h=hei,t=th);
+		    wcylinder(r=wi,h=th);}}}
+     else{
+	  cylinder(r=rad,h=th);
+	  translate([0,-rad,0]){
+	       cube([hei-rad,2*rad,th]);}}}
