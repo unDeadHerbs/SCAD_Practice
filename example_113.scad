@@ -42,7 +42,7 @@ module example_113(){
 			       edge_with-2*wall_thickness,
 			       10]);}}}}
      module top_hole(){
-	  cylinder(d=15*mm,h=/*overcut*/50);}
+	  cylinder(d=15*mm,h=/*overcut*/60);}
      difference(){
 	  union(){
 	       core();

@@ -31,6 +31,19 @@ function unique(list,message) =
       any(list)
      :any(list);
 
+
+/*
+ * A copy of =cylinder= that is slightly taller so that =difference=
+ * dosen't cause graphical glitches.
+ */
+module wcylinder(h,r,r1,r2,d,d1,d2,center){
+     fix_delta=1;
+     if(center){
+	  cylinder(h=h+fix_delta,r=r,r1=r1,r2=r2,d=d,d1=d1,d2=d2,center=center);}
+     else{
+	  translate(down(fix_delta)){
+	       cylinder(h=h+2*fix_delta,r=r,r1=r1,r2=r2,d=d,d1=d1,d2=d2,center=center);}}}
+
 /*
  * Make a pair of an object.
  *
@@ -147,7 +160,7 @@ module arch(radius,height,thickness,
      if(wi){
 	  difference(){
 	       arch(r=rad,h=hei,t=th);
-	       cylinder(r=wi,h=th);}}
+	       wcylinder(r=wi,h=th);}}
      else{
 	  cylinder(r=rad,h=th);
 	  translate([0,-rad,0]){
@@ -180,8 +193,8 @@ module annulus(outer_radius,inner_radius,height,
      if(rad_in<0){
 	  difference(){
 	       cylinder(r=rad_out,h=hei,center=center);
-	       cylinder(r=rad_out+rad_in,h=hei,center=center);}}
+	       wcylinder(r=rad_out+rad_in,h=hei,center=center);}}
      else{
 	  difference(){
 	       cylinder(r=rad_out,h=hei,center=center);
-	       cylinder(r=rad_in,h=hei,center=center);}}}
+	       wcylinder(r=rad_in,h=hei,center=center);}}}
