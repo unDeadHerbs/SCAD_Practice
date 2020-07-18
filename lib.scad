@@ -90,7 +90,7 @@ module pair(split,rot,edge=false,mirrored=false,
 	       children();}}
      module flip(){
 	  if(mirrored){
-	       mirror([0,1,0]){
+	       mirror([1,0,0]){
 		    children();}}
 	  else{
 	       rotate([0,0,180]){
