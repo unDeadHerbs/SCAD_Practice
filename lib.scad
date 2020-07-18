@@ -32,6 +32,10 @@ function unique(list,message) =
      :any(list);
 
 
+X=[1,0,0];
+Y=[0,1,0];
+Z=[0,0,1];
+
 /*
  * Glue each child onto the outside of the priors.
  *
@@ -147,18 +151,20 @@ module set(count,radius,
  *
  * @param distance The distance to lift by.
  */
+function _move(distance)=
+     unique([distance],"Distance required.");
 function up(distance)=
-     [0,0,unique([distance],"Distance required.")];
+     _move(distance)*Z;
 function down(distance)=
-     up(-distance);
+     _move(-distance)*Z;
 function right(distance)=
-     [0,unique([distance],"Distance required."),0];
+     _move(distance)*Y;
 function left(distance)=
-     right(-distance);
+     _move(-distance)*Y;
 function forward(distance)=
-     [unique([distance],"Distance required."),0,0];
+     _move(distance)*X;
 function back(distance)=
-     forward(-distance);
+     _move(-distance)*X;
 
 /*
  * A copy of =cylinder= that is slightly taller so that =difference=
@@ -176,6 +182,31 @@ module wcylinder(h,r,r1,r2,d,d1,d2,center){
 	       cylinder(h=h+2*fix_delta,
 			r=r,r1=r1,r2=r2,
 			d=d,d1=d1,d2=d2);}}}
+
+module Cube(size,center=false){
+     s=unique([size],"Size required.");
+     if(center==false || center==true){
+	  cube(s,center);}
+     else if(len(s)==undef){
+	  Cube([s,s,s],center);}
+     else{
+	  if(s[0]<0){
+	       assert(center==false || center[0]!=0,
+		    "Can't center and flip along the same axis.");
+	       translate(X*s[0]){
+		    Cube([-s[0],s[1],s[2]],center);}}
+	  else if(s[1]<0){
+	       assert(center==false || center[1]==0,
+		      "Can't center and flip along the same axis.");
+	       translate(Y*s[1]){
+		    Cube([s[0],-s[1],s[2]],center);}}
+	  else if(s[2]<0){
+	       assert(center==false || center[2]==0,
+		      "Can't center and flip along the same axis.");
+	       translate(Z*s[2]){
+		    Cube([s[0],s[1],-s[2]],center);}}
+	  else translate([for(i=[0:2])-1/2*s[i]*center[i]]){
+		    cube(s);}}}
 
 /*
  * Make a parallelepiped out of three three-vectors.

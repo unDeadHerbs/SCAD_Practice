@@ -2,7 +2,7 @@ $fn=100;
 mm=1; // define units
 degrees=1;
 
-use <lib.scad>
+include <lib.scad>
 
 module example_115(){
      height=60*mm;
@@ -31,16 +31,18 @@ module example_115(){
 		     lenght-back_wall,
 		     height-bottom_wall]);}
 
-	  module peg(){cylinder(d=15*mm,h=bottom_wall);}
+	  module peg(){
+	       cylinder(d=15*mm,h=bottom_wall);}
 	  module slot(){
-	       cube([25,back_wall,15]);}
+	       Cube([25,-back_wall,15],center=X);}
 	  translate(forward(cut_depth-20)){
-	       translate(forward(-25/2)+left(back_wall)+up(22.5)){
-		    slot();}
+	       translate(up(22.5)){
+	          slot();}
 	       translate(left(27)){
 		    peg();
 		    translate(left(50)){
 			 peg();}}}}
+	  
 	  
      module axel(){
 	  translate(up(height)){
