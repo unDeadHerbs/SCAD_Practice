@@ -49,6 +49,17 @@ module outer_glue()
 			 hull()
 			      children(co);}
 
+
+// This doesn't work because children aren't connected.
+
+module outer_hull(){
+     outer_glue()children();
+     difference(){
+	  hull()outer_glue()children();
+	  for(c=[0:$children-1])hull()children(c);}}
+
+
+
 /*
  * Make a pair of an object.
  *
