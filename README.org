@@ -1,1 +1,1 @@
-Practicing SCAD
+Bug fixed between 2020-02 and 2020-07
