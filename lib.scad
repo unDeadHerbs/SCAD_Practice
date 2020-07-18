@@ -183,10 +183,12 @@ module wcylinder(h,r,r1,r2,d,d1,d2,center){
 			r=r,r1=r1,r2=r2,
 			d=d,d1=d1,d2=d2);}}}
 
-module Cube(size,center=false){
+module Cube(size,center=[0,0,0]){
      s=unique([size],"Size required.");
-     if(center==false || center==true){
-	  cube(s,center);}
+     if(center==true){
+	  Cube(s,X+Y+Z);}
+     else if(center==false){
+	  Cube(s);}
      else if(len(s)==undef){
 	  Cube([s,s,s],center);}
      else{
@@ -209,6 +211,15 @@ module Cube(size,center=false){
 		    cube(s);}}}
 
 /*
+ * Mirror the children around a plane.
+ */
+module Mirror(normalVector,radius=0){
+     translate(radius*normalVector){
+	  mirror(normalVector){
+	       translate(-radius*normalVector){
+		    children();}}}}
+
+/*
  * Make a parallelepiped out of three three-vectors.
  */
 module parallelepiped(v1,v2,v3)
@@ -223,10 +234,12 @@ module parallelepiped(v1,v2,v3)
  * @param outer_radius The outer radius.
  *        radius_outer
  *        ro
+ *        od
  *
  * @param inner_radius The inner radius.
  *        radius_inner
- *        ri 
+ *        ri
+ *        id
  *
  * @param thickness The height of the annulus.
  *        height
@@ -251,11 +264,11 @@ module parallelepiped(v1,v2,v3)
 // shape.
 module annulus(outer_radius,inner_radius,height,
 	       radius_outer,radius_inner,
-	       ro,ri,h,thickness,t,center=false,
+	       ro,od,ri,id,h,thickness,t,center=false,
 	       theta,cut_tangent=false,cut_symmetric=false){
-     rad_out=unique([outer_radius,radius_outer,ro],
+     rad_out=unique([outer_radius,radius_outer,ro,od/2],
 		    "Outer radius required.");
-     rad_in=unique([inner_radius,radius_inner,ri],
+     rad_in=unique([inner_radius,radius_inner,ri,id/2],
 		   "Inner radius required.");
      hei=unique([height,h,thickness,t],
 		"Height required.");
