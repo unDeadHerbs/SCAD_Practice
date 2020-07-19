@@ -57,10 +57,15 @@ module outer_glue()
 // This doesn't work because children aren't connected.
 
 module outer_hull(){
-     outer_glue()children();
+     outer_glue(){
+	  children();}
      difference(){
-	  hull()outer_glue()children();
-	  for(c=[0:$children-1])hull()children(c);}}
+	  hull(){
+	       outer_glue(){
+		    children();}}
+	  for(c=[0:$children-1]){
+	       hull(){
+		    children(c);}}}}
 
 
 
@@ -81,7 +86,7 @@ module outer_hull(){
  * @pair mirrored Make the left a mirror of the right instead of a
  *                rotation.
  */
-module pair(split,rot,edge=false,mirrored=false,
+module pair(split,rot,edge=false,mirrored=true,
      radius,r,diameter,d,theta){
      rad=unique([split/2,radius,r,diameter,d/2],
 		"Distance required.");
