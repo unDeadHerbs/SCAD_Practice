@@ -6,6 +6,19 @@ function sum(x, i = 0)=
      ?x[i]
       +sum(x, i + 1)
      :0;
+
+function pop(list,i=0)=
+     i==0
+     ?pop(list,1)
+     :i==len(list)-1
+      ?[list[i]]
+      :concat([list[i]],pop(list,i+1));
+
+function take(list,count)=
+     count==1
+     ?[list[0]]
+     :concat([list[0]],take(pop(list),count-1));
+
 /*
  * Count the number of non-undef elements of a list.
  */
@@ -353,3 +366,39 @@ module arch(radius,height,thickness,
 	  cylinder(r=rad,h=th);
 	  translate([0,-rad,0]){
 	       cube([hei-rad,2*rad,th]);}}}
+
+
+/*
+ * This is an experimental section for dealing with 2d objects
+ */
+module thin(){
+     linear_extrude(1/$fn){
+	  children();}}
+
+module Circle(r){
+     thin(){
+	  circle(r);}}
+
+module loft(){
+     for(c=[0:$children-2]){
+	  hull(){
+	       children(c);
+	       children(c+1);}}}
+
+module camshaft(list){
+     // assert (len(list)-1)%2=0,"Invalid camshaft.");
+     if(len(list)>3){
+	  translate(list[1]){
+	       camshaft(pop(pop(list)));}
+	  camshaft(take(list,3));}
+     else if(len(list)==3){
+	  //assert [0,2] numbers
+	  assert(len(list[1])==3,"Invalid offset.");
+	  // TODO: let the faces be more than circles?
+	  //       Shapes can't be parameters
+	  loft(){
+	       Circle(list[0]);
+	       translate(list[1]){
+		    Circle(list[2]);}}}
+     else{
+	  assert(false,"That's just a cylinder.");}}
