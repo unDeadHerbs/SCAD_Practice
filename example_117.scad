@@ -8,7 +8,7 @@ module ramp(length,height,width){
      hull(){
 	  polyhedron([[0,0,0],[length,0,0],[0,0,height],
 		      [0,width,0],[length,width,0],[0,width,height]],
-		     [[0,1,2],[3,4,5],[0,1,4,3],[0,3,5,2],[1,2,5,4]]);}}
+		     [[2,1,0],[3,4,5],[0,1,4,3],[0,3,5,2],[1,2,5,4]]);}}
 
 module example_117(){
      length=150;
@@ -45,8 +45,8 @@ module example_117(){
 		    translate(center){
 			 rotate(-90*X){
 			      annulus(ro=terminal_radius,id=20,h=thickness);}}}
-	       translate((width-thickness)/2*Y){
-		    cube([length,thickness,thickness]);}}}
+	       translate((width-thickness)/2*Y+up(thickness)){
+		    ramp(length,thickness,thickness);}}}
 
      plate();
      supports();
