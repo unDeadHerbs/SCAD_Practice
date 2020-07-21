@@ -16,7 +16,9 @@ module example_120(){
 	  rad=20;
 	  translate(thickness/2*Y-rad*X){
 	       rotate(180*Z){
-		    ramp(60,40,thickness);}}
+		    /*manual offset to embed in curve*/
+		    translate(-6*X){
+			 ramp(60+6,40+6,thickness);}}}
 	  annulus(ro=rad,id=15,height=60);}
      module pin_shaft(){ // rename this
 	  radius=25;
