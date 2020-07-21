@@ -4,11 +4,6 @@ degrees=1;
 
 include <lib.scad>
 
-module ramp(length,height,width){
-     polyhedron([[0,0,0],[length,0,0],[0,0,height],
-		 [0,width,0],[length,width,0],[0,width,height]],
-		[[2,1,0],[3,4,5],[0,1,4,3],[0,3,5,2],[1,2,5,4]]);}
-
 module example_117(){
      length=150;
      width=100;

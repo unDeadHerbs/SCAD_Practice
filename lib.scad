@@ -96,11 +96,12 @@ module outer_hull(){
  *
  * @param edge Center on the left of the pair rather than the middle.
  *
- * @pair mirrored Make the left a mirror of the right instead of a
+ * @param mirrored Make the left a mirror of the right instead of a
  *                rotation.
+ * @param center The refrence locaiton for the pair.
  */
 module pair(split,rot,edge=false,mirrored=true,
-     radius,r,diameter,d,theta){
+     radius,r,diameter,d,theta,center){
      rad=unique([split/2,radius,r,diameter,d/2],
 		"Distance required.");
      angle=any([rot,theta,0]);
@@ -117,13 +118,19 @@ module pair(split,rot,edge=false,mirrored=true,
 	  else{
 	       rotate([0,0,180]){
 		    children();}}}
-     rotate([0,0,angle]){
-	  center(){
-	       translate([rad,0,0]){
-		    children();}
-	       translate([-rad,0,0]){
-		    flip(){
-			 children();}}}}}
+     if(center!=undef){
+	  translate(center){
+	       pair(split,rad,theta=theta){
+		    translate(-center){
+			 children();}}}}
+     else{
+	  rotate([0,0,angle]){
+	       center(){
+		    translate([rad,0,0]){
+			 children();}
+		    translate([-rad,0,0]){
+			 flip(){
+			      children();}}}}}}
 
 module xpair(split,rot=0,edge=false){
      pair(split,rot,edge){
@@ -163,6 +170,18 @@ module set(count,radius,
 	  rotate([0,0,360/cnt*i]){
 	       translate([rad,0,0]){
 		    children();}}}}
+
+module grid(directions,times){
+     module itter(d,t){
+     for(i=[0:t]){
+	  translate(d*i){
+	       children();}}}
+     if(len(directions)==1){
+	  itter(directions[0],times[0])children();}
+	  else{
+	       itter(directions[0],times[0]){
+		    grid(pop(directions),pop(times)){
+			 children();}}}}
 
 /*
  * A quick rename of translate along z.
@@ -367,6 +386,12 @@ module arch(radius,height,thickness,
 	  translate([0,-rad,0]){
 	       cube([hei-rad,2*rad,th]);}}}
 
+
+module ramp(length,height,width){
+     // assert numbers
+     polyhedron([[0,0,0],[length,0,0],[0,0,height],
+		 [0,width,0],[length,width,0],[0,width,height]],
+		[[2,1,0],[3,4,5],[0,1,4,3],[0,3,5,2],[1,2,5,4]]);}
 
 /*
  * This is an experimental section for dealing with 2d objects
