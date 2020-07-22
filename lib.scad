@@ -367,25 +367,34 @@ module annulus(outer_radius,inner_radius,height,
  */
 module arch(radius,height,thickness,
 	    r,h,t,
-	    window_radius,w){
+	    window_radius,w,ri,
+     bottom_edge=false){
      rad=unique([radius,r],
 		"Radius required.");
      hei=unique([height,h],
 		"Height required.");
      th=unique([thickness,t],
 	       "Thickness required.");
-     wi=any([window_radius,w]);
-     if(wi){
-	  if(wi<0){
-	       arch(r=rad,h=hei,t=th,w=r-wi);}
+     wi=any([window_radius,w,ri]);
+     module flip(){
+	  if(bottom_edge){
+	       translate((hei-rad)*X){
+		    rotate(180*Z){
+			 children();}}}
 	  else{
-	       difference(){
-		    arch(r=rad,h=hei,t=th);
-		    wcylinder(r=wi,h=th);}}}
-     else{
-	  cylinder(r=rad,h=th);
-	  translate([0,-rad,0]){
-	       cube([hei-rad,2*rad,th]);}}}
+	       children();}}
+     flip(){
+	  if(wi){
+	       if(wi<0){
+		    arch(r=rad,h=hei,t=th,w=r-wi);}
+	       else{
+		    difference(){
+			 arch(r=rad,h=hei,t=th);
+			 wcylinder(r=wi,h=th);}}}
+	  else{
+	       cylinder(r=rad,h=th);
+	       translate([0,-rad,0]){
+		    cube([hei-rad,2*rad,th]);}}}}
 
 
 module ramp(length,height,width){
@@ -422,9 +431,10 @@ module camshaft(list){
 	  assert(len(list[1])==3,"Invalid offset.");
 	  // TODO: let the faces be more than circles?
 	  //       Shapes can't be parameters
-	  loft(){
-	       Circle(list[0]);
-	       translate(list[1]){
-		    Circle(list[2]);}}}
+	  if(list[1]!=[0,0,0]){ // clip out empty spacers
+	       loft(){
+		    Circle(list[0]);
+		    translate(list[1]){
+			 Circle(list[2]);}}}}
      else{
 	  assert(false,"That's just a cylinder.");}}
