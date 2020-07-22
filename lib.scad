@@ -230,7 +230,7 @@ module Cube(size,center=[0,0,0]){
 	  Cube([s,s,s],center);}
      else{
 	  if(s[0]<0){
-	       assert(center==false || center[0]!=0,
+	       assert(center==false || center[0]==0,
 		    "Can't center and flip along the same axis.");
 	       translate(X*s[0]){
 		    Cube([-s[0],s[1],s[2]],center);}}
@@ -299,6 +299,7 @@ module parallelepiped(v1,v2,v3)
 // TODO: have an optional 2D child to shape the annulus's profile,
 // this is in conflict with the radial parameters, as they define the
 // shape.
+// TODO: Take an opptional second center and make a slot.
 module annulus(outer_radius,inner_radius,height,
 	       radius_outer,radius_inner,
 	       ro,od,ri,id,h,thickness,t,center=false,
