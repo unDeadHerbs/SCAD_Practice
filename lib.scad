@@ -302,11 +302,11 @@ module parallelepiped(v1,v2,v3)
 // TODO: Take an opptional second center and make a slot.
 module annulus(outer_radius,inner_radius,height,
 	       radius_outer,radius_inner,
-	       ro,od,ri,id,h,thickness,t,center=false,
+	       or,ro,od,ir,ri,id,h,thickness,t,center=false,
 	       theta,cut_tangent=false,cut_symmetric=false){
-     rad_out=unique([outer_radius,radius_outer,ro,od/2],
+     rad_out=unique([outer_radius,radius_outer,or,ro,od/2],
 		    "Outer radius required.");
-     rad_in=unique([inner_radius,radius_inner,ri,id/2],
+     rad_in=unique([inner_radius,radius_inner,ir,ri,id/2],
 		   "Inner radius required.");
      hei=unique([height,h,thickness,t],
 		"Height required.");
