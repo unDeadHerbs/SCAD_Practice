@@ -141,6 +141,12 @@ module ypair(split,rot=0,edge=false){
 	       rotate(-90){
 		    children();}}}}
 
+module zpair(split,rot=0,edge=false){
+     rotate(-90*Y){
+	  pair(split,rot,edge){
+	       rotate(90*Y){
+		    children();}}}}
+
 /*
  * Make a pair but with a middle element.
  *
