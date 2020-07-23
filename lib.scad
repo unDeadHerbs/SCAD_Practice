@@ -209,7 +209,12 @@ function back(distance)=
  */
 module wcylinder(h,r,r1,r2,d,d1,d2,center){
      fix_delta=1;
-     if(center){
+     if(h<0){
+	  mirror(Z){
+	       wcylinder(h=-h,
+			r=r,r1=r1,r2=r2,
+			d=d,d1=d1,d2=d2);}}
+     else if(center){
 	  cylinder(h=h+fix_delta,
 		   r=r,r1=r1,r2=r2,
 		   d=d,d1=d1,d2=d2,
