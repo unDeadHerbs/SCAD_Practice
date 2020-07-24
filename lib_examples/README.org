@@ -1,0 +1,27 @@
+# Created 2020-07-24 Fri 14:28
+#+TITLE: 
+* Library Examples
+These are example outputs from the library.
+** annulus
+#+BEGIN_SRC SCAD
+  $fn=100;
+  use <../lib.scad>
+  
+  for(i=[0:30:180])
+       translate(right(2/3*i))
+  	  annulus(ro=10,
+  		  ri=5,
+  		  t=5,
+  		  theta=i,
+  		  cut_tangent=true,
+  		  cut_symmetric=true);
+  
+  for(i=[0:30:180])
+       translate(right(2/3*i)+forward(25))
+  	  annulus(ro=10,
+  		  ri=5,
+  		  t=5,
+  		  theta=i*1.9,
+  		  cut_symmetric=true);
+#+END_SRC
+[[annulus.png]]

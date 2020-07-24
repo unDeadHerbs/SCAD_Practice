@@ -1,11 +1,12 @@
-include $(wildcard *.deps)
-
 EXAMPLES = $(wildcard *.scad)
 PICTURES = $(EXAMPLES:.scad=.png)
 SCAD = openscad -m make
 RENDER = --autocenter --viewall --render
 
-all: $(PICTURES)
+all: README.org $(PICTURES)
+
+README.org: README.template *.scad
+	'emacs' $< --batch --eval="(org-org-export-to-org)"
 
 %.stl: %.scad
 	$(SCAD) -o ./$@ -d $@.deps $<
@@ -16,3 +17,5 @@ annulus.png: annulus.scad
 
 %.png: %.scad
 	$(SCAD) $(RENDER) -o ./$@ -d $@.deps $<
+
+include $(wildcard *.deps)
