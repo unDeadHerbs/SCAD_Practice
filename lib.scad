@@ -7,12 +7,12 @@ function sum(x, i = 0)=
       +sum(x, i + 1)
      :0;
 
-function pop(list,i=0)=
+function pop(list,i=0,cat=[])=
      i==0
      ?pop(list,1)
      :i==len(list)-1
-      ?[list[i]]
-      :concat([list[i]],pop(list,i+1));
+      ?concat(cat,[list[i]])
+      :pop(list,i+1,cat=concat(cat,[list[i]]));
 
 function take(list,count)=
      count==1
@@ -107,7 +107,7 @@ module pair(split,rot,edge=false,mirrored=true,
      angle=any([rot,theta,0]);
      module center(){
 	  if(edge){
-	       translate([rad,0,0]){
+	       translate([abs(rad),0,0]){
 		    children();}}
 	  else{
 	       children();}}
@@ -417,11 +417,14 @@ module ramp(length,height,width){
 /*
  * This is an experimental section for dealing with 2d objects
  */
+module Square(size,center){
+}
+
 module thin(){
      linear_extrude(1/$fn){
 	  children();}}
 
-module Circle(r){
+module CircleT(r){
      thin(){
 	  circle(r);}}
 
@@ -444,8 +447,8 @@ module camshaft(list){
 	  //       Shapes can't be parameters
 	  if(list[1]!=[0,0,0]){ // clip out empty spacers
 	       loft(){
-		    Circle(list[0]);
+		    CircleT(list[0]);
 		    translate(list[1]){
-			 Circle(list[2]);}}}}
+			 CircleT(list[2]);}}}}
      else{
 	  assert(false,"That's just a cylinder.");}}
