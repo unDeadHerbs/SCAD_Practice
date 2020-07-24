@@ -1,3 +1,7 @@
+all:
+	-@make -C practices
+	-@make -C lib_examples
+
 get_samples:
 	mkdir samples -p
 	cd samples
