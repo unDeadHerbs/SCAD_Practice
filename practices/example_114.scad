@@ -2,7 +2,7 @@ $fn=100;
 mm=1; // define units
 degrees=1;
 
-use <lib.scad>
+use <../lib.scad>
 
 module example_114(body_size=100*mm){
      module claw(has_claw=true,thickness=body_size/2)render(){

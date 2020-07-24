@@ -2,7 +2,7 @@ $fn=100;
 mm=1; // define units
 degrees=1;
 
-use <lib.scad>;
+use <../lib.scad>;
 
 module example_112(){
      shaft_radius=25*mm;
@@ -29,7 +29,7 @@ module example_112(){
 		       ri=-wall_thickness,
 		       h=socket_length);}}
      plate();
-     up(plate_thickness){
+     translate(up(plate_thickness)){
 	  shaft();}}
 
 example_112();

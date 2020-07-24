@@ -2,7 +2,7 @@ $fn=100;
 mm=1; // define units
 degrees=1;
 
-include <lib.scad>
+include <../lib.scad>
 
 // TODO: This needs cleaning up.
 module example_121(){

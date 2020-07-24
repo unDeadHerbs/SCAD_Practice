@@ -2,7 +2,7 @@ $fn=100;
 mm=1; // define units
 degrees=1;
 
-use <lib.scad>;
+use <../lib.scad>;
 
 module example_102(){
      length=100*mm;
