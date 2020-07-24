@@ -15,9 +15,9 @@ function pop(list) =
 	       list[i]];
 
 /*
- * Return the requrested number of elements off of the front of a list.
+ * Return the requested number of elements off of the front of a list.
  */
-// TODO: Take negitive for off of the back.
+// TODO: Take negative for off of the back.
 function take(count,list) =
      count==0?[]:
      [for(i=[0:count-1])
@@ -317,7 +317,9 @@ module parallelepiped(v1,v2,v3)
 // TODO: have an optional 2D child to shape the annulus's profile,
 // this is in conflict with the radial parameters, as they define the
 // shape.
-// TODO: Take an opptional second center and make a slot.
+// TODO: Take an optional second center and make a slot.
+// TODO: Make the cut mode a string and add a third mode for cut
+// parallel to X axis.
 module annulus(outer_radius,inner_radius,height,
 	       radius_outer,radius_inner,
 	       or,ro,od,ir,ri,id,h,thickness,t,center=false,
