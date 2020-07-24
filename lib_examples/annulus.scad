@@ -1,8 +1,5 @@
 $fn=100;
-mm=1; // define units
-degrees=1;
-
-use <lib.scad>
+use <../lib.scad>
 
 render(){
      for(i=[0:30:180])
