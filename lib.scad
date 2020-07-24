@@ -1,25 +1,30 @@
 /*
  * Sum all of the elements in a vector.
  */
-function sum(x, i = 0)=
-     len(x) > i
-     ?x[i]
-      +sum(x, i + 1)
-     :0;
+function sum(x, i = 0) =
+     len(x) <= i?0:
+     x[i]+sum(x, i + 1);
 
-function pop(list,i=0,cat=[])=
-     i==0
-     ?len(list)==1
-      ?[]
-      :pop(list,1)
-     :i==len(list)-1
-      ?concat(cat,[list[i]])
-      :pop(list,i+1,cat=concat(cat,[list[i]]));
+/*
+ * Pop one element off of the front of a list.
+ */
+function pop(list) =
+     assert(len(list)>0)
+     len(list)==1?[]:
+     [for(i=[1:len(list)-1])
+	       list[i]];
 
-function take(list,count)=
-     count==1
-     ?[list[0]]
-     :concat([list[0]],take(pop(list),count-1));
+/*
+ * Return the requrested number of elements off of the front of a list.
+ */
+// TODO: Take negitive for off of the back.
+function take(count,list) =
+     count==0?[]:
+     [for(i=[0:count-1])
+	  if(i>=len(list))
+	       undef
+	  else
+	       list[i]];
 
 /*
  * Count the number of non-undef elements of a list.
@@ -32,6 +37,8 @@ function count_defined(list) =
 /*
  * Return the first non-undef element, if there is one.
  */
+// TODO: This may be faster to return early in the case of large
+// lists, how large?
 function any(list) =
      [for(e=list)
 	 if(e!=undef)
@@ -40,11 +47,9 @@ function any(list) =
 /*
  * Assert that exactly one element is non-undef and return it.
  */
-function unique(list,message) =
-     message
-     ?assert(count_defined(list)==1,message)
-      any(list)
-     :any(list);
+function unique(list,message="") =
+     assert(count_defined(list)==1,message)
+     any(list);
 
 
 X=[1,0,0];
@@ -441,7 +446,7 @@ module camshaft(list){
      if(len(list)>3){
 	  translate(list[1]){
 	       camshaft(pop(pop(list)));}
-	  camshaft(take(list,3));}
+	  camshaft(take(3,list));}
      else if(len(list)==3){
 	  //assert [0,2] numbers
 	  assert(len(list[1])==3,"Invalid offset.");
