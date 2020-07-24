@@ -1,1 +1,3 @@
-Practicing SCAD
+* Practicing SCAD
+I'm working though the examples on [[https://caddexpert.com/solidworks-catia-nx-autocad-3d-drawings-practice-books-100-pdf/][caddexpert.com]] and building a
+library of things I find usefull while doing so.
