@@ -87,7 +87,36 @@ module outer_hull(){
 	       hull(){
 		    children(c);}}}}
 
+// TODO: This needs to not replicate =set='s interfece or this
+// function and its brethren will become maintenance nightmare.
+module set_hull(count,radius,
+	   c,r,diameter,d){
+     cnt=unique([count,c],
+		"Count required.");
+     rad=unique([radius,r,diameter/2,d/2],
+		"Radius required.");
+     difference(){
+	  hull(){
+	       set(cnt,rad){
+		    children();}}
+	  set(cnt,rad){
+	       hull(){
+		    children();}}}
+     set(cnt,rad){
+	  children();}}
 
+module minimal_affixment_plate(count,radius,c,r,d,diameter){
+     assert($children==2,
+	    "Must take exactly two children; the object and the holes.");
+     cnt=unique([count,c],
+		"Count required.");
+     rad=unique([radius,r,diameter/2,d/2],
+		"Radius required.");
+     outer_hull(){
+	  hull(){
+	       children(0);}
+	  set_hull(cnt,rad){
+	       children(1);}}}
 
 /*
  * Make a pair of an object.

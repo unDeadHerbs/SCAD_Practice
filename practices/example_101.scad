@@ -11,13 +11,9 @@ module example_101(){
 	  edge_radius=15*mm;
 	  hole_radius=edge_radius/2;
 	  hold_distance=150*mm;
-	  difference(){
-	       hull(){
-		    cylinder(r=axial_radius,h=thickness);
-		    pair(hold_distance)
-			 cylinder(r=edge_radius,h=thickness);}
-	       pair(hold_distance)
-		    cylinder(r=hole_radius,h=thickness);}}
+	  minimal_affixment_plate(2,r=hold_distance/2){
+	       cylinder(r=axial_radius,h=thickness);
+	       annulus(ro=edge_radius,ri=hole_radius,t=thickness);}}
      module axle_key(){
 	  length=75*mm;
 	  slot_width=15*mm;
