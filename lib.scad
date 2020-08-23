@@ -244,7 +244,7 @@ module Cube(size,center=[0,0,0]){
 	  Cube(s,X+Y+Z);}
      else if(center==false){
 	  Cube(s);}
-     else if(len(s)==undef){
+     else if(len(s)==undef){ // TODO: This warns, fix.
 	  Cube([s,s,s],center);}
      else{
 	  if(s[0]<0){
@@ -417,11 +417,12 @@ module arch(radius,height,thickness,
 		    cube([hei-rad,2*rad,th]);}}}}
 
 
-module ramp(length,height,width){
-     // assert numbers
-     polyhedron([[0,0,0],[length,0,0],[0,0,height],
-		 [0,width,0],[length,width,0],[0,width,height]],
-		[[2,1,0],[3,4,5],[0,1,4,3],[0,3,5,2],[1,2,5,4]]);}
+module ramp(length,height,width,center=false){
+  // assert numbers
+  translate((center?-width/2:0)*Y){
+    polyhedron([[0,0,0],[length,0,0],[0,0,height],
+		[0,width,0],[length,width,0],[0,width,height]],
+	       [[2,1,0],[3,4,5],[0,1,4,3],[0,3,5,2],[1,2,5,4]]);}}
 
 /*
  * This is an experimental section for dealing with 2d objects
