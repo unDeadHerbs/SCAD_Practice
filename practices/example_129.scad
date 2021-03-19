@@ -14,6 +14,8 @@ function add(list1,list2,sum=[])=
       ?concat(sum,list1)
       :add(pop(list1),pop(list2),concat(sum,[list1[0]+list2[0]]));
 
+// TODO: While working on 139, I think I spotted a bug in this.  Make
+// a ground truth ruler next to a slice to check.
 module bent_plate(list,thickness,width,sirface="middle"){
      assert(sirface=="top","Other modes are TODO");
      assert(len(list)>0,"List needs to be an odd length.");
