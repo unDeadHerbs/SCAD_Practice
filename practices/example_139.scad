@@ -25,22 +25,20 @@ module example_139(){
 				cylinder(r=8,h=thicness*p1);}}
 	module wing(){
 		angle=120;
-		length=100/*overcut*/;
+		length=100/*oversize*/;
 		thicness=10;
 		rotate(-angle/2*Z){
 			Cube([length,thicness,length]);
 			rotate((angle-90)*Z)
 				Cube([thicness,length,length]);}}
 
-	/* p1=(r,0)
-	 * p2=(x2,y2)=(a,a)
+	/* I interpret the 15deg indications as saying that the wings
+	 * intersect the bounding circle at (0,1) and (1,0).  Working from
+	 * the right center intersection.
+	 *
 	 * m=-tan(15)
-	 * m=(0-y1)/(r-x2)
-	 * m=-a/(r-a)
-	 * (a-r)m=a
-	 * a(m-1)-rm=0
-	 * a=rm/(m-1)
-	 * d=\sqrt(2)*a
+	 * m=(0-p)/(r-p)
+	 * d=\sqrt(2)*p
 	 */
 	m=-tan(15*degrees);
 	corner_radius=sqrt(2)*radius*m/(m-1);
