@@ -35,4 +35,8 @@ module example_134(){
       rotate(90*Y){
 	cylinder(r=15,h=side*5/*overcut*/,center=true);}}}}
 
-example_134();
+%example_134();
+
+point([1,1,1])
+rotate(90*Y)
+cylinder(h=48*sqrt(3),r=10);

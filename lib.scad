@@ -173,6 +173,7 @@ module tripple(split,rot=0){
  *
  * @param r The radius of the circle.
  */
+// TODO: Add a theta for rotation offset.
 module set(count,radius,
 	   c,r,diameter,d){
      cnt=unique([count,c],
