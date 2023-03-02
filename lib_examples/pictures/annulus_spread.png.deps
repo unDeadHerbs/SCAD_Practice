@@ -1,0 +1,3 @@
+./pictures/annulus_spread.png: \
+	/mnt/rad/projects/scad_practice/lib.scad \
+	pictures/annulus_spread.scad

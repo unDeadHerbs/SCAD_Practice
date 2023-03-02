@@ -2,5 +2,7 @@
 * Library Examples
 These are example outputs from the library.
 ** annulus
-#+INCLUDE: "./annulus.scad" src SCAD
-[[annulus.png]]
+#+INCLUDE: "./pictures/annulus_basic.scad" src SCAD
+[[pictures/annulus_basic.png]]
+[[animations/annulus_spin.gif]]
+[[pictures/annulus_spread.png]]

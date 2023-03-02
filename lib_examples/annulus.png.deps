@@ -1,3 +1,0 @@
-./annulus.png: \
-	/mnt/6/projects/scad_practice/lib.scad \
-	annulus.scad
