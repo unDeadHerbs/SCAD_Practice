@@ -1,7 +1,7 @@
 $fn=100;
 $vpt=[80,150,0];
 $vpr=[40,0,90];
-$vpd=600;
+$vpd=800;
 use <../../lib.scad>
 
 module block(){
