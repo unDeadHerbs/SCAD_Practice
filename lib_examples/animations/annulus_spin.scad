@@ -10,17 +10,18 @@ spin  = $t*360;
 bounces = 4;
 theta = sin($t*bounces*180)^2*180;
 
-rotate(spin*[0,0,1])
-	annulus(ro=10,
-	        ri=5,
-	        t=5,
-	        theta=theta,
-	        cut_tangent=true,
-	        cut_symmetric=true);
-translate($vpt*2)
-	rotate(spin*[0,0,1])
+render(){
+	rotate(spin*[0,0,1]){
 		annulus(ro=10,
-		        ri=5,
-		        t=5,
-		        theta=theta*1.9,
-		        cut_symmetric=true);
+						ri=5,
+						t=5,
+						theta=theta,
+						cut_tangent=true,
+						cut_symmetric=true);}
+	translate($vpt*2){
+		rotate(spin*[0,0,1]){
+			annulus(ro=10,
+							ri=5,
+							t=5,
+							theta=theta*1.9,
+							cut_symmetric=true);}}}

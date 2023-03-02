@@ -1,0 +1,3 @@
+./pictures/outer_glue_basic.png: \
+	/mnt/rad/projects/scad_practice/lib.scad \
+	pictures/outer_glue_basic.scad

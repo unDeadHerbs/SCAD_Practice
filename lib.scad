@@ -19,11 +19,9 @@ function pop(list) =
  */
 // TODO: Take negative for off of the back.
 function take(count,list) =
+     assert(count<=len(list))
      count==0?[]:
      [for(i=[0:count-1])
-	  if(i>=len(list))
-	       undef
-	  else
 	       list[i]];
 
 /*
@@ -109,7 +107,7 @@ module outer_hull(){
  */
 module pair(split,rot,edge=false,mirrored=true,
      radius,r,diameter,d,theta,center){
-     rad=unique([split/2,radius,r,diameter,d/2],
+	rad=unique([split==undef?undef:split/2,radius,r,diameter,d==undef?undef:d/2],
 		"Distance required.");
      angle=any([rot,theta,0]);
      module center(){
@@ -325,9 +323,9 @@ module annulus(outer_radius,inner_radius,height,
 	       radius_outer,radius_inner,
 	       or,ro,od,ir,ri,id,h,thickness,t,center=false,
 	       theta,cut_tangent=false,cut_symmetric=false){
-     rad_out=unique([outer_radius,radius_outer,or,ro,od/2],
+     rad_out=unique([outer_radius,radius_outer,or,ro,od==undef?undef:od/2],
 		    "Outer radius required.");
-     rad_in=unique([inner_radius,radius_inner,ir,ri,id/2],
+     rad_in=unique([inner_radius,radius_inner,ir,ri,id==undef?undef:id/2],
 		   "Inner radius required.");
      hei=unique([height,h,thickness,t],
 		"Height required.");

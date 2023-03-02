@@ -1,0 +1,3 @@
+./pictures/outer_glue_bad_order.png: \
+	/mnt/rad/projects/scad_practice/lib.scad \
+	pictures/outer_glue_bad_order.scad

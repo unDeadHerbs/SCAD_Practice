@@ -19,12 +19,12 @@ README.org: README.template $(PIC_CODE) $(ANI_CODE)
 	$(SCAD) -o ./$@ -d $@.deps $<
 
 %.gif: %.scad
-	$(SCAD) --render --animate 300 --imgsize=1200,700 -d $@.deps $<
+	$(SCAD) --animate 300 --imgsize=1200,700 -d $@.deps $<
 	convert 'frame*.png' -set delay 1x60 "$@"
 	rm frame*.png
 
 %.png: %.scad
-	$(SCAD) --render --imgsize=1200,700 -o ./$@ -d $@.deps $<
+	$(SCAD) --imgsize=1200,700 -o ./$@ -d $@.deps $<
 
 include $(wildcard *.deps)
 

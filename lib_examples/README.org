@@ -1,8 +1,36 @@
-# Created 2023-03-02 Thu 11:11
+# Created 2023-03-02 Thu 12:49
 #+title: 
 * Library Examples
-These are example outputs from the library.
-** =annulus=
+** Maths and Programming
+*** =sum=
+The =sum= function takes a list of things and returns their sum.
+*** =pop=
+=pop= takes a list and returns it without the current last element.
+*** =take=
+=take= takes a count and a list and returns that many elments from the
+list.
+*** =count_defined=
+=count_defined= takes a list and returns how many non-=undef= elements
+it contains.
+*** =any=
+=any= takes a list and returns a non-=undef= element from it.
+*** =unique=
+=unique= takes a list, checks that there is only one non-=undef=
+element in the list, and returns it, also takes an optional error
+message.
+** Geometry
+*** =outer_glue= (Under Development)
+Take a list of children and attaches them to each other while trying
+to maintain important facets.
+[[animations/outer_glue_basic.gif]]
+
+**** Usage Notes
+This is sensitive to ordering, the features of the elements are added
+in the order provided.  Add simple parts in order from "inside" to
+"outside".
+
+[[pictures/outer_glue_bad_order.png]]
+*** =annulus=
 An [[https://en.wikipedia.org/wiki/Annulus][annulus]] is a a ring or doughnut shape.  
 #+begin_src SCAD
   $fn=100;
@@ -19,7 +47,7 @@ Here is a sweep of some shapes it can make.
 [[animations/annulus_spin.gif]]
 And here's a static sampling.
 [[pictures/annulus_spread.png]]
-*** TODO Future Features
+**** TODO Bugs and Future Features
 - [ ] Fix the edge of the =tanget_cut= version.
 - [ ] Fix the angle mesures used in =tanget_cut=.
 - [ ] Accept a 2D profile shape.
