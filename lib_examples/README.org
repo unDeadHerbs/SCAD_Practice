@@ -1,8 +1,9 @@
-# Created 2023-03-02 Thu 10:24
+# Created 2023-03-02 Thu 11:11
 #+title: 
 * Library Examples
 These are example outputs from the library.
-** annulus
+** =annulus=
+An [[https://en.wikipedia.org/wiki/Annulus][annulus]] is a a ring or doughnut shape.  
 #+begin_src SCAD
   $fn=100;
   use <../../lib.scad>
@@ -14,5 +15,11 @@ These are example outputs from the library.
   	cut_symmetric=true);
 #+end_src
 [[pictures/annulus_basic.png]]
+Here is a sweep of some shapes it can make.
 [[animations/annulus_spin.gif]]
+And here's a static sampling.
 [[pictures/annulus_spread.png]]
+*** TODO Future Features
+- [ ] Fix the edge of the =tanget_cut= version.
+- [ ] Fix the angle mesures used in =tanget_cut=.
+- [ ] Accept a 2D profile shape.
