@@ -1,4 +1,4 @@
-# Created 2023-03-02 Thu 13:12
+# Created 2023-03-02 Thu 14:18
 #+title: 
 * Library Examples
 ** Maths and Programming
@@ -26,8 +26,8 @@ to maintain important facets.
 
 **** Usage Notes
 This is sensitive to ordering, the features of the elements are added
-in the order provided.  Add simple parts in order from "inside" to
-"outside".
+in the order provided.  Try to add simple parts to a central "core"
+order from "inside" to "outside".
 
 [[pictures/outer_glue_bad_order.png]]
 *** =annulus=
@@ -36,11 +36,12 @@ An [[https://en.wikipedia.org/wiki/Annulus][annulus]] is a a ring or doughnut sh
   $fn=100;
   use <../../lib.scad>
 
-  annulus(ro=10,
-  	ri=5,
-  	t=5,
-  	theta=30,
-  	cut_symmetric=true);
+  render(){
+  	annulus(ro=10,
+  		ri=5,
+  		t=5,
+  		theta=30,
+  		cut_symmetric=true);}
 #+end_src
 [[pictures/annulus_basic.png]]
 Here is a sweep of some shapes it can make.

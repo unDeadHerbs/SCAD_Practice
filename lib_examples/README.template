@@ -25,8 +25,8 @@ to maintain important facets.
 
 **** Usage Notes
 This is sensitive to ordering, the features of the elements are added
-in the order provided.  Add simple parts in order from "inside" to
-"outside".
+in the order provided.  Try to add simple parts to a central "core"
+order from "inside" to "outside".
 
 [[pictures/outer_glue_bad_order.png]]
 *** =annulus=
