@@ -1,4 +1,4 @@
-# Created 2023-03-02 Thu 19:50
+# Created 2023-03-02 Thu 19:54
 #+title: 
 * Library Examples
 ** Maths and Programming
@@ -30,6 +30,8 @@ in the order provided.  Try to add simple parts to a central "core"
 order from "inside" to "outside".
 
 [[pictures/outer_glue_bad_order.png]]
+
+*** TODO =outer_hull=
 *** =pair=
 Take an argument object and make two of it.  The two objects can be
 rotated, reflected, or translated.
