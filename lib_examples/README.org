@@ -1,4 +1,4 @@
-# Created 2023-03-02 Thu 18:46
+# Created 2023-03-02 Thu 19:50
 #+title: 
 * Library Examples
 ** Maths and Programming
@@ -89,3 +89,5 @@ And here's a static sampling.
 ** Other
 *** TODO =bent_plate=
 [[pictures/bent_plate_basic.png]]
+Fancy!
+[[animations/bent_plate_folding.gif]]
