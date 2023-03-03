@@ -176,16 +176,18 @@ module set(count,radius,
 	   c,r,diameter,d){
      cnt=unique([count,c],
 		"Count required.");
-     rad=unique([radius,r,diameter/2,d/2],
+     rad=unique([radius,r,diameter==undef?undef:diameter/2,d==undef?undef:d/2],
 		"Radius required.");
      for(i=[0:cnt]){
 	  rotate([0,0,360/cnt*i]){
 	       translate([rad,0,0]){
 		    children();}}}}
 
+// TODO: allow for the directions to be separate to the distance.
+// TODO: Add a centered option?
 module grid(directions,times=[2,2]){
      module itter(d,t){
-     for(i=[0:t]){
+     for(i=[0:t-1]){
 	  translate(d*i){
 	       children();}}}
      if(len(directions)==1){
@@ -219,6 +221,7 @@ function back(distance)=
  * A copy of =cylinder= that is slightly taller so that =difference=
  * doesn't cause graphical glitches.
  */
+// TODO: Mark this as internal with an underscore?
 module wcylinder(h,r,r1,r2,d,d1,d2,center){
      fix_delta=1;
      if(h<0){
@@ -277,7 +280,7 @@ module Mirror(normalVector,radius=0){
  * Make a parallelepiped out of three three-vectors.
  */
 module parallelepiped(v1,v2,v3)
-     hull() // Not sure why this is needed.
+     hull() // TODO: Fix the face turning order.
 	  polyhedron([0*v1,v1,v1+v2,v2,v3,v3+v1,v3+v1+v2,v3+v2],
 		     [[0,1,2,3],[4,5,6,7],[0,1,5,4],
 		      [3,2,6,7],[0,3,7,4],[1,5,6,2]]);
@@ -424,7 +427,7 @@ module ramp(length,height,width,center=false){
 	       [[2,1,0],[3,4,5],[0,1,4,3],[0,3,5,2],[1,2,5,4]]);}}
 
 /*
- * This is an experimental section for dealing with 2d objects
+ * This is an experimental section.
  */
 module Square(size,center){
 }
@@ -461,3 +464,49 @@ module camshaft(list){
 			 CircleT(list[2]);}}}}
      else{
 	  assert(false,"That's just a cylinder.");}}
+
+
+// TODO: I think I spotted a bug in this.  Make a ground truth ruler
+// next to a slice to check.
+module bent_plate(list,thickness,width,sirface="middle"){
+     assert(sirface=="top","Other modes are TODO");
+     assert(len(list)>0,"List needs to be an odd length.");
+     T=unique([thickness],"Thickness required.");
+     if(len(list)>1){
+	  assert(len(list)>2,"Invalid input.");
+	  assert(list[1]<=90 && list[1]>=-90,"Angles larger than 90 are TODO.");
+	  // TODO: Turn the paper workings into some documenation for this.
+	  I=sin(abs(list[1]))*T;
+	  r=T*(1-cos(list[1]));
+	  O=I-r/tan(abs(list[1]));
+	  L=r/sin(abs(list[1]));
+	  if(list[1]>0){
+	       translate((list[0]+O)*X){
+		    rotate(-list[1]*Y){
+			 bent_plate(add(pop(pop(list)),
+					[L]),
+				    thickness,
+				    width,
+				    sirface);}}
+	       Cube([list[0]+O,width,thickness]);}
+	  else{
+	       translate(r*Z-I*X){
+		    translate(list[0]*X){
+			 rotate(-list[1]*Y){
+			      bent_plate(pop(pop(list)),
+					 thickness,
+					 width,
+					 sirface);}}}
+	       Cube([list[0],width,thickness]);}}
+     else{
+	  Cube([list[0],width,thickness]);}}
+
+function add(list1,list2,sum=[])=
+     assert(list1!=undef)
+     assert(list2!=undef)
+     assert(sum !=undef)
+     len(list1)==0
+     ?concat(sum,list2)
+     :len(list2)==0
+      ?concat(sum,list1)
+      :add(pop(list1),pop(list2),concat(sum,[list1[0]+list2[0]]));

@@ -21,10 +21,10 @@ module example_135(){
 		    translate(rad*X){
 			 projection(cut = true){
 			      annulus(od=50,id=id,t=1/*arbitary*/,center=true);}}}}}
-     translate(rad*Y){
-	  plate();}
+     translate(rad*Y-thickness*Z){
+			 plate();}
      translate(rad*Z){
-	  rotate(90*X){
+			 rotate(90*X){
 	       plate();}}
      elbow_pipe();}
 

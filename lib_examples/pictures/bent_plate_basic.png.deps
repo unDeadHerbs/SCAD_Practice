@@ -1,0 +1,3 @@
+./pictures/bent_plate_basic.png: \
+	/mnt/rad/projects/scad_practice/lib.scad \
+	pictures/bent_plate_basic.scad

@@ -29,6 +29,31 @@ in the order provided.  Try to add simple parts to a central "core"
 order from "inside" to "outside".
 
 [[pictures/outer_glue_bad_order.png]]
+*** =pair=
+Take an argument object and make two of it.  The two objects can be
+rotated, reflected, or translated.
+
+The functions =xpair=, =ypair=, and =zpair= exist to simplify the
+readability of using code.
+
+There also exists =tripple= which makes a pair and maintains a middle element.
+*** =set=
+Make a ring of objects.
+
+[[pictures/set_basic.png]]
+*** =grid=
+Make a grid of an object, the first parameter is a list of step sizes,
+the second is a count of steps.
+
+[[pictures/grid_basic.png]]
+*** =up=, =down=, =right=, =left=, =forward=, and =back=
+These are short functions that return a vector in the desired
+direction and amount.
+*** =Cube=
+This is a rewrite of =cube= that let you center only along one axis.
+*** TODO =Mirror=
+*** TODO =parallelepiped=
+Make some pretty vectors here to describe the shape
 *** =annulus=
 An [[https://en.wikipedia.org/wiki/Annulus][annulus]] is a a ring or doughnut shape.  
 #+INCLUDE: "./pictures/annulus_basic.scad" src SCAD
@@ -41,3 +66,15 @@ And here's a static sampling.
 - [ ] Fix the edge of the =tanget_cut= version.
 - [ ] Fix the angle mesures used in =tanget_cut=.
 - [ ] Accept a 2D profile shape.
+*** TODO =arch=
+*** TODO =ramp=
+** 2D
+*** TODO =Square=
+*** TODO =thin=
+*** TODO =CircleT=
+** Extrusion
+*** TODO =loft=
+*** TODO =camshaft=
+** Other
+*** TODO =bent_plate=
+[[pictures/bent_plate_basic.png]]

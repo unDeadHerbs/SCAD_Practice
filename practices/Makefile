@@ -1,7 +1,8 @@
 include $(wildcard *.deps)
+SCAD = ~/build/openscad/build/openscad
 
 %.stl: %.scad
-	openscad -m make -o ./$@ -d $@.deps $<
+	$(SCAD) -m make -o ./$@ -d $@.deps $<
 
 %.png: %.scad
-	openscad -m make --render -o ./$@ -d $@.deps $<
+	$(SCAD) -m make --render -o ./$@ -d $@.deps $<
