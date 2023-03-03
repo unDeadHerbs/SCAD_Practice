@@ -1,4 +1,4 @@
-# Created 2023-03-02 Thu 19:54
+# Created 2023-03-02 Thu 20:01
 #+title: 
 * Library Examples
 ** Maths and Programming
@@ -27,7 +27,8 @@ to maintain important facets.
 **** Usage Notes
 This is sensitive to ordering, the features of the elements are added
 in the order provided.  Try to add simple parts to a central "core"
-order from "inside" to "outside".
+order from "inside" to "outside".  If they are added in the wrong
+order, the facet will be overwritten by features on the "core".
 
 [[pictures/outer_glue_bad_order.png]]
 
